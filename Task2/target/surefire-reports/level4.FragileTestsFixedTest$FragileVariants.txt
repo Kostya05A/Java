@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: level4.FragileTestsFixedTest$FragileVariants
--------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 2, Time elapsed: 0 s -- in level4.FragileTestsFixedTest$FragileVariants

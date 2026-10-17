@@ -1,75 +1,109 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ru.coursehub</groupId>
-    <artifactId>error-handling-tasks</artifactId>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
-
-    <name>CourseHub: задания 1-15 по обработке ошибок</name>
+    <groupId>com.example</groupId>
+    <artifactId>coursehub</artifactId>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.release>21</maven.compiler.release>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <junit.version>5.10.2</junit.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
-
-    <!--
-      Нестандартная раскладка исходников: код лежит в src/levelN, тесты - в test/levelN.
-      Раньше здесь лежали файлы вперемешку с уровнями, поэтому sourceDirectory/testSourceDirectory
-      переопределены. Классы намеренно лежат в default package (как в Task1) - так проще начать.
-    -->
-    <build>
-        <!--
-          Нестандартная раскладка: код - в src/levelN и src/domain,
-          тесты - в test/levelN, ресурсы тестов - в src/test/resources.
-          Классы намеренно в default package (как в Task1) - учебный проект.
-        -->
-        <sourceDirectory>${project.basedir}/src</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/test</testSourceDirectory>
-        <testResources>
-            <testResource>
-                <directory>${project.basedir}/src/test/resources</directory>
-            </testResource>
-        </testResources>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <!--
-                      runOrder=random: тесты не должны зависеть от порядка (задание 12).
-                      Каждый прогон даёт другой порядок - если тест "упал только в связке",
-                      он сразу это покажет.
-                    -->
-                    <runOrder>random</runOrder>
-                    <trimStackTrace>false</trimStackTrace>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>${junit.version}</version>
+            <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <!-- общая модель: src/Course.java, задачи берут ее через import src.Course -->
+        <sourceDirectory>${project.basedir}/src</sourceDirectory>
+        <!-- код задания лежит рядом с тестом: task9/CourseTest.java и т.д. -->
+        <testSourceDirectory>${project.basedir}/${task.dir}</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <!-- тест не должен зависеть от порядка запуска -->
+                    <runOrder>random</runOrder>
+                    <!-- контраст хрупких тестов: он падает по замыслу,
+                         в прогон не входит. Запуск: -Dsurefire.excludes= -->
+                    <excludes>
+                        <exclude>**/Broken*Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- mvn test -> task9, mvn -Ptask8 test -> task8, mvn -Ptask10 test -> task10 -->
+        <profile>
+            <id>task9</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <task.dir>task9</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task8</id>
+            <properties>
+                <task.dir>task8</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task10</id>
+            <properties>
+                <task.dir>task10</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task11</id>
+            <properties>
+                <task.dir>task11</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task12</id>
+            <properties>
+                <task.dir>task12</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task13</id>
+            <properties>
+                <task.dir>task13</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task14</id>
+            <properties>
+                <task.dir>task14</task.dir>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>task15</id>
+            <properties>
+                <task.dir>task15</task.dir>
+            </properties>
+        </profile>
+    </profiles>
 </project>
